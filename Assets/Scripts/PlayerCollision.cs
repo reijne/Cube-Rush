@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class PlayerCollision : MonoBehaviour
 {
   public PlayerMovement pm;
+  public ScoreHandling sh;
   public FollowPlayer fp;
   public Rigidbody rb;
   public Camera cam;
@@ -25,11 +26,15 @@ public class PlayerCollision : MonoBehaviour
     if (c.collider.tag == "Finish") {
       playerHitFinish(c);  
     }
+    if (c.collider.tag == "MovingObstacle") {
+      sh.penalty += 50;
+    }
   }
 
   void playerHitFinish(Collision c) {
     pm.alive = false;
     pm.rb.useGravity = false;
+    Debug.Log(rb.velocity.z);
     rb.AddForce(0, 0, -10*rb.velocity.z); // Slow the player down if the finish is hit
 
     if (hit) {

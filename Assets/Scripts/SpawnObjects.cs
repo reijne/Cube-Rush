@@ -1,0 +1,62 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SpawnObjects : MonoBehaviour
+{
+    public PlayerMovement pm;
+    public GameObject player;
+    public GameObject small;
+    public GameObject medium;
+
+    public float ymin_small;
+    public float ymin_med;
+    public float xmin;
+    public float xmax;
+    // Start is called before the first frame update
+    void Start()
+    {
+      player = GameObject.Find("Player");
+      pm = player.GetComponent<PlayerMovement>();
+      StartCoroutine(spawner());
+    }
+
+    private void spawnWave() {
+      int choice;
+      float x, z;
+      // Debug.Log("spawn a wave");
+      for (int i = 0; i <= Random.Range(5, 15); i++) {
+        x = Random.Range(xmin, xmax);
+        z = 2*pm.speed;
+        choice = Random.Range(0, 2);
+        if (choice == 0) {
+          spawnSmall(x, z);
+        } else {
+          spawnMedium(x, z);
+        }
+      }
+      spawnBeforePlayer();
+    }
+
+    private void spawnSmall(float x, float z) {
+      GameObject s = Instantiate(small) as GameObject;
+      s.transform.position = new Vector3(x, Random.Range(ymin_small, ymin_small+1f), z);
+    }
+
+    private void spawnMedium(float x, float z) {
+      GameObject m = Instantiate(medium) as GameObject;
+      m.transform.position = new Vector3(x, Random.Range(ymin_med, ymin_med+2f), z);
+    }
+
+    private void spawnBeforePlayer() {
+      GameObject m = Instantiate(medium) as GameObject;
+      m.transform.position = pm.rb.transform.position + new Vector3(0, 0, 40+pm.speed);
+    }
+
+    IEnumerator spawner() {
+      while (pm.alive) {
+        yield return new WaitForSeconds(Random.Range(0.7f, 1.4f));
+        spawnWave();
+      }
+    }
+}

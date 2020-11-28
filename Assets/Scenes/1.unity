@@ -8438,6 +8438,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c22e57bbcd503740b1e6d8991286d4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pc: {fileID: 1706964251}
+  mo: {fileID: 0}
   rb: {fileID: 1706964245}
   joystick: {fileID: 494291127}
   forwardForce: 6400
@@ -8447,7 +8449,8 @@ MonoBehaviour:
   justJumped: 0
   timeRoundStart: 0
   tries: 1
-  pc: {fileID: 1706964251}
+  infinite: 0
+  speed: 10
   androidControls: {fileID: 72141539}
 --- !u!114 &1706964251
 MonoBehaviour:

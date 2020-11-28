@@ -4,7 +4,7 @@ using System.Collections;
 
 public class jumper : MonoBehaviour {
 	public Button jumpButton;
-  public PlayerMovement ps;
+  public PlayerMovement pm;
 
 	void Start () {
 		Button btn = jumpButton.GetComponent<Button>();
@@ -12,9 +12,9 @@ public class jumper : MonoBehaviour {
 	}
 
 	void TaskOnClick(){
-		if (!ps.justJumped) {
-      ps.rb.AddForce(0, ps.jumpForce, 0, ForceMode.Impulse);
-      ps.justJumped = true;
+		if (pm.jumpTimer >= 69) {
+      pm.rb.AddForce(0, pm.jumpForce, 0, ForceMode.Impulse);
+      pm.jumpTimer = 0;
     }
 	}
 }
