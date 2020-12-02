@@ -21,6 +21,17 @@ public class ScoreHandling : MonoBehaviour
         Debug.Log("Penalty");
         penalty--;
       }
-      scoreObj.text = Mathf.Round(score).ToString(); 
+      showScore();
+    }
+
+    private void showScore() {
+      if (score > 1000000) {
+        scoreObj.text = (score/1000000).ToString("F2") + "M"; 
+      } else if (score > 1000) {
+
+        scoreObj.text = (score/1000).ToString("F1") + "k"; 
+      } else {
+        scoreObj.text = Mathf.Round(score).ToString(); 
+      }
     }
 }
