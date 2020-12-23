@@ -3,6 +3,7 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - ChangeColour
     - ChangeFog
+    - DataKeeper
     - FloatingJoystick
     - FollowPlayer
     - GrabageCollector
@@ -54,6 +55,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
@@ -61,43 +66,45 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11786}
     - Class: 114
-      Script: {instanceID: 11810}
+      Script: {instanceID: 11788}
     - Class: 114
-      Script: {instanceID: 11988}
+      Script: {instanceID: 11812}
     - Class: 114
       Script: {instanceID: 12110}
     - Class: 114
       Script: {instanceID: 12152}
     - Class: 114
-      Script: {instanceID: 12472}
+      Script: {instanceID: 12380}
     - Class: 114
-      Script: {instanceID: 12656}
+      Script: {instanceID: 12476}
     - Class: 114
-      Script: {instanceID: 12756}
+      Script: {instanceID: 12660}
     - Class: 114
-      Script: {instanceID: 12776}
+      Script: {instanceID: 12744}
     - Class: 114
-      Script: {instanceID: 12874}
+      Script: {instanceID: 12762}
     - Class: 114
-      Script: {instanceID: 12934}
+      Script: {instanceID: 12782}
     - Class: 114
-      Script: {instanceID: 13204}
+      Script: {instanceID: 12828}
     - Class: 114
-      Script: {instanceID: 13234}
+      Script: {instanceID: 12846}
     - Class: 114
-      Script: {instanceID: 13352}
+      Script: {instanceID: 12886}
     - Class: 114
-      Script: {instanceID: 13480}
+      Script: {instanceID: 12946}
     - Class: 114
-      Script: {instanceID: 13862}
+      Script: {instanceID: 13216}
     - Class: 114
-      Script: {instanceID: 19888}
+      Script: {instanceID: 13246}
     - Class: 114
-      Script: {instanceID: 403244}
+      Script: {instanceID: 13306}
     - Class: 114
-      Script: {instanceID: 451278}
+      Script: {instanceID: 13366}
     - Class: 114
-      Script: {instanceID: 471256}
+      Script: {instanceID: 13494}
+    - Class: 114
+      Script: {instanceID: 13876}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -119,6 +126,12 @@ ScriptsOnlyBuild:
     - Class: 850595691
       Script: {instanceID: 0}
   scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: 699619b86d9359741a4f58540298c80b
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Text
   - hash:
       serializedVersion: 2
       Hash: a6e561615949734e9f12f9b61661f43e
@@ -179,12 +192,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: ActivationTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 699619b86d9359741a4f58540298c80b
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: Text
   - hash:
       serializedVersion: 2
       Hash: fd8b23ad3c9e81bc85b197495bc510ac
@@ -301,6 +308,12 @@ ScriptsOnlyBuild:
     className: Mask
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GrabageCollector
+  - hash:
+      serializedVersion: 2
       Hash: caa533b001ae39b864ba8425019e2268
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -355,6 +368,12 @@ ScriptsOnlyBuild:
     className: SignalTrack
   - hash:
       serializedVersion: 2
+      Hash: e35b2129ff0075e40dc25226b20b4ccc
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SpawnObjects
+  - hash:
+      serializedVersion: 2
       Hash: fdf606025d251fc3a86d963bc213fcdb
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -371,6 +390,18 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SpriteAnimator
+  - hash:
+      serializedVersion: 2
+      Hash: a3ac0f4f1623114ad6d19b837df2610c
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ScoreHandling
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DataKeeper
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -475,7 +506,13 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: edf9ae6c3405f872115e0310bb2a26b2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ChangeColour
+  - hash:
+      serializedVersion: 2
+      Hash: feb4ab1a4458a1caf2802d20cc826baa
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerMovement
@@ -623,30 +660,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: e35b2129ff0075e40dc25226b20b4ccc
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: SpawnObjects
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: GrabageCollector
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: ChangeColour
-  - hash:
-      serializedVersion: 2
-      Hash: 11cd9d028aa0c484c6a35a999df53a71
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: ScoreHandling
   platform: 5
   scenePathNames:
   - Assets/Scenes/5.unity

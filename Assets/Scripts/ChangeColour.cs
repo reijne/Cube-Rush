@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ChangeColour : MonoBehaviour
 {
     private Light l;
     Color next;
+    public int initTime = 1000;
     private float fadeTime = 1000f;
     private float tc;
     private int lightTimer = 1000;
@@ -20,6 +22,13 @@ public class ChangeColour : MonoBehaviour
     void Start()
     {
       l = this.GetComponent<Light>();
+      fadeTime = initTime;
+      lightTimer = initTime;
+      if (SceneManager.GetActiveScene().name == "title") {
+        colorIndex = Random.Range(0, 6);
+        setColor();
+        lightTimer = 0;
+      }
     }
 
     void setColor() {
@@ -31,7 +40,7 @@ public class ChangeColour : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate() {
       lightTimer++;
-      if (lightTimer > 1000) {
+      if (lightTimer > initTime) {
         setColor();
         lightTimer = 0;
       }

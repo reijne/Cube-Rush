@@ -20,6 +20,10 @@ sceneSetups:
   isActive: 0
   isSubScene: 0
 - path: Assets/Scenes/5.unity
+  isLoaded: 0
+  isActive: 0
+  isSubScene: 0
+- path: Assets/Scenes/title.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
