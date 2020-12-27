@@ -17,7 +17,7 @@ public class AudioPlayer : MonoBehaviour
     }
     
     if (DataKeeper.dataInstance != null) {
-      instance.GetComponent<AudioSource>().volume = DataKeeper.dataInstance.volume;
+      instance.GetComponent<AudioSource>().volume = DataKeeper.dataInstance.musicVolume;
     } else {
       instance.GetComponent<AudioSource>().volume = 0.7f;
     }

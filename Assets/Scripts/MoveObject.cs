@@ -18,7 +18,7 @@ public class MoveObject : MonoBehaviour
     }
 
     private void FixedUpdate() {
-      rb.velocity = new Vector3(0, 0, -pm.speed);
+      if (pm.alive) rb.velocity = new Vector3(0, 0, -pm.speed);
     }
 
     private void OnCollisionEnter(Collision c) {

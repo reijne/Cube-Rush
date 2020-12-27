@@ -17,14 +17,20 @@ public class PlayerCollision : MonoBehaviour
   public bool hit = false;
   public bool fin = false;
   public GameObject groundPlane;
+  public GameObject obstacles;
+  public GameObject winningScreen;
+  public GameObject increaseDifficultyButton;
   private AudioPlayer audiop;
-  private AudioSource audiosrc;
+  private AudioSource soundEffectSource;
   private bool firstFin = true;
   private bool firstHit = true;
   
   private void Start() {
-    audiop = GameObject.Find("AudioPlayer").GetComponent<AudioPlayer>();
-    audiosrc = audiop.GetComponent<AudioSource>();
+    GameObject au = GameObject.Find("AudioPlayer");
+    audiop = au.GetComponent<AudioPlayer>();
+    soundEffectSource = GameObject.Find("DataKeeper").GetComponent<AudioSource>();
+    au.GetComponent<AudioSource>().volume = DataKeeper.dataInstance.musicVolume;
+    soundEffectSource.GetComponent<AudioSource>().volume = DataKeeper.dataInstance.soundVolume;
   }
   void OnCollisionEnter(Collision c) {
     if (c.collider.tag == "Obstacle") {
@@ -37,21 +43,22 @@ public class PlayerCollision : MonoBehaviour
     }
     if (c.collider.tag == "MovingObstacle") {
       sh.penalty += 50;
-      rb.AddForce(new Vector3(0, 0, -10), ForceMode.Impulse);
+      if (!pm.alive) c.rigidbody.AddExplosionForce(10, rb.position, 10, 0, ForceMode.Impulse);
+      else if (pm.speed > 100) rb.AddForce(new Vector3(0, 0, -10/DataKeeper.dataInstance.difficulty), ForceMode.Impulse);
     }
   }
 
   void playHitSound(Collision c) {
     if (!firstHit) return;
-    audiosrc.clip = audiop.sounds[1];
-    audiosrc.Play();
+    soundEffectSource.clip = audiop.sounds[1];
+    soundEffectSource.Play();
     firstHit = false;
   }
 
   void playFinishSound() {
     if (firstFin) {
-      audiosrc.clip = audiop.sounds[0];
-      audiosrc.Play();
+      soundEffectSource.clip = audiop.sounds[0];
+      soundEffectSource.Play();
       firstFin = false;
     }
   }
@@ -64,12 +71,12 @@ public class PlayerCollision : MonoBehaviour
     if (hit) {
       notifyText.text = "You finished...\ndont count tho\n\npress R to respawn";
     } else {
-      notifyText.text = "You finished!\n\n";
-      if (pm.currentLevel < 4) notifyText.text += "'Enter' to continue";
       fin = true;
 
       // Division must be made because otherwise overwriting cross difficulty happens.
-      if (DataKeeper.difficultyToString() == "normal") {
+      if (DataKeeper.difficultyToString() == "easy") {
+        DataKeeper.dataInstance.maxEasyReached = Mathf.Max(DataKeeper.dataInstance.maxEasyReached, pm.currentLevel);
+      } else if (DataKeeper.difficultyToString() == "normal") {
         DataKeeper.dataInstance.maxNormalReached = Mathf.Max(DataKeeper.dataInstance.maxNormalReached, pm.currentLevel);
       } else if (DataKeeper.difficultyToString() == "hard") {
         DataKeeper.dataInstance.maxHardReached = Mathf.Max(DataKeeper.dataInstance.maxHardReached, pm.currentLevel);
@@ -79,7 +86,17 @@ public class PlayerCollision : MonoBehaviour
 
       DataKeeper.save();
       Destroy(groundPlane);
-      if (pm.currentLevel == 4) showPointTotal();
+      Destroy(obstacles);
+      winningScreen.SetActive(true);
+      if (pm.currentLevel == 4) {
+        showPointTotal();
+        if (DataKeeper.difficultyToString() == "insane") {
+          Debug.Log("Wew we made it");
+          increaseDifficultyButton.SetActive(false);
+        } else {
+          increaseDifficultyButton.SetActive(true);
+        }
+      }
     }
   }
 

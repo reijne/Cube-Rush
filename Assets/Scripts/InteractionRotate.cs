@@ -18,10 +18,8 @@ public class InteractionRotate : MonoBehaviour
     void Update() {
       if (isRotate) {
         offset = (Input.mousePosition - mouseRef);
-        Debug.Log(offset);
         rotation.y = -(offset.x) * sensitivity;
-        rotation.x = -(offset.y) * sensitivity;
-        Debug.Log(rotation);
+        rotation.x = (offset.y) * sensitivity;
         rb.AddTorque(rotation);
         mouseRef = Input.mousePosition;
       }

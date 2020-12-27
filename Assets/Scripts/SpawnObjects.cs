@@ -19,7 +19,7 @@ public class SpawnObjects : MonoBehaviour
     {
       player = GameObject.Find("Player");
       pm = player.GetComponent<PlayerMovement>();
-      StartCoroutine(spawner());
+      StartCoroutine(waiter());
     }
 
     private void spawnWave() {
@@ -67,9 +67,21 @@ public class SpawnObjects : MonoBehaviour
       }
     }
 
+    IEnumerator waiter() {
+      yield return new WaitForSeconds(4);
+      PlayerMovement.startSpeedIncrement = true;
+      StartCoroutine(spawner());
+    }
+
     IEnumerator spawner() {
       while (pm.alive) {
-        yield return new WaitForSeconds(Random.Range(0.3f, 1.4f));
+        if (pm.speed > 150) {
+          yield return new WaitForSeconds(Random.Range(0.4f, 0.8f));
+        } else if (pm.speed > 100) {
+          yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
+        } else {
+          yield return new WaitForSeconds(Random.Range(0.8f, 1.4f));
+        }
         spawnWave();
       }
     }

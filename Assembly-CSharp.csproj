@@ -51,18 +51,16 @@
      <Compile Include="Assets\Scripts\ScoreHandling.cs" />
      <Compile Include="Assets\Scripts\DataKeeper.cs" />
      <Compile Include="Assets\Scripts\Data.cs" />
-     <Compile Include="Assets\Scripts\MoveByTouch.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\DynamicJoystick.cs" />
-     <Compile Include="Assets\Scripts\jumper.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FixedJoystick.cs" />
      <Compile Include="Assets\Scripts\ChangeColour.cs" />
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\ForceField.cs" />
      <Compile Include="Assets\Scripts\AudioPlayer.cs" />
      <Compile Include="Assets\Joystick Pack\Examples\JoystickPlayerExample.cs" />
+     <Compile Include="Assets\Scripts\InteractionRotate.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
      <Compile Include="Assets\Scripts\SettingsHandler.cs" />
-     <Compile Include="Assets\Scripts\InteractionRotate.cs" />
      <None Include="Assets\consolas\freefontsdownload.txt" />
     <Reference Include="UnityEngine">
         <HintPath>C:/Program Files/Unity/Hub/Editor/2020.1.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

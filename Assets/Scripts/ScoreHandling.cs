@@ -46,7 +46,7 @@ public class ScoreHandling : MonoBehaviour
     private void levelScoreHandler() {
       if (!pc.fin) {
         if (pm.horizontalInput != 0) {
-          score -= 10;
+          score -= 10 / Mathf.Max(DataKeeper.dataInstance.difficulty, 1);
         }
         showScore();
       } else {
@@ -55,11 +55,12 @@ public class ScoreHandling : MonoBehaviour
     }
 
     private void showScore() {
-      scoreObj.text = convertScore();
+      scoreObj.text = convertScore(score);
     }
 
     public void handleBestScores() {
       if (highscoreHandled) return;
+      score = Mathf.Round(score);
       Data loaded = SaveLoad.load();
       Dictionary<int, float> loadedBestScores;
 
@@ -67,7 +68,9 @@ public class ScoreHandling : MonoBehaviour
         Debug.Log("Load not found");
         showBestScore(true);
       } else {
-        if (DataKeeper.difficultyToString() == "normal") {
+        if (DataKeeper.difficultyToString() == "easy") {
+          loadedBestScores = loaded.bestEasyScores;
+        } else if (DataKeeper.difficultyToString() == "normal") {
           loadedBestScores = loaded.bestNormalScores;
         } else if (DataKeeper.difficultyToString() == "hard") {
           loadedBestScores = loaded.bestHardScores;
@@ -93,23 +96,23 @@ public class ScoreHandling : MonoBehaviour
     private void showBestScore(bool isBestScore) {
       scoreObj.fontSize = 32;
       if (isBestScore) {
-        scoreObj.text = "NEW Best: " + convertScore();
+        scoreObj.text = "NEW Best: " + convertScore(score);
       } else {
-        string current = convertScore(); 
+        string current = convertScore(score); 
         Debug.Log(current);
 
         score = DataKeeper.getBestScores()[pm.currentLevel];
-        scoreObj.text = current + "    Best: " + convertScore();
+        scoreObj.text = current + "    Best: " + convertScore(score);
       }
     }
 
-    public string convertScore() {
-      if (score > 1000000) {
-        return (score/1000000).ToString("F2") + "M"; 
-      } else if (score > 1000) {
-        return (score/1000).ToString("F1") + "k"; 
+    public string convertScore(float localScore) {
+      if (localScore > 1000000) {
+        return (localScore/1000000).ToString("F2") + "M"; 
+      } else if (localScore > 1000) {
+        return (localScore/1000).ToString("F1") + "k"; 
       } else {
-        return Mathf.Round(score).ToString(); 
+        return Mathf.Round(localScore).ToString(); 
       }
     }
 }
