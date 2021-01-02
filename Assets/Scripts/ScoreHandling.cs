@@ -31,7 +31,11 @@ public class ScoreHandling : MonoBehaviour
 
     private void infinityScoreHandler() {
       if (penalty <= 0 && pm.alive) {
-        score += (Time.time - pm.timeRoundStart) / DataKeeper.dataInstance.difficulty;
+        if (DataKeeper.android) {
+          score += (Time.time - pm.timeRoundStart) / (DataKeeper.dataInstance.difficulty+DataKeeper.androidOffset);
+        } else {
+          score += (Time.time - pm.timeRoundStart) / DataKeeper.dataInstance.difficulty;
+        }
       } else {
         penalty--;
       }
@@ -46,7 +50,11 @@ public class ScoreHandling : MonoBehaviour
     private void levelScoreHandler() {
       if (!pc.fin) {
         if (pm.horizontalInput != 0) {
-          score -= 10 / Mathf.Max(DataKeeper.dataInstance.difficulty, 1);
+          if (DataKeeper.android) {
+            score -= 10 / Mathf.Max((DataKeeper.dataInstance.difficulty+DataKeeper.androidOffset), 1);
+          } else {
+            score -= 10 / Mathf.Max(DataKeeper.dataInstance.difficulty, 1);
+          }
         }
         showScore();
       } else {
@@ -65,7 +73,6 @@ public class ScoreHandling : MonoBehaviour
       Dictionary<int, float> loadedBestScores;
 
       if (loaded == null) {
-        Debug.Log("Load not found");
         showBestScore(true);
       } else {
         if (DataKeeper.difficultyToString() == "easy") {
@@ -79,13 +86,9 @@ public class ScoreHandling : MonoBehaviour
         }
 
         if (score > loadedBestScores[pm.currentLevel]) {
-          Debug.Log("Score better than in savefile");
           showBestScore(true);
           DataKeeper.getBestScores()[pm.currentLevel] = score;
         } else {
-          Debug.Log("Score not better than saved file");
-          Debug.Log(score);
-          Debug.Log(loadedBestScores[pm.currentLevel]);
           showBestScore(false);
         }
       }
@@ -99,8 +102,6 @@ public class ScoreHandling : MonoBehaviour
         scoreObj.text = "NEW Best: " + convertScore(score);
       } else {
         string current = convertScore(score); 
-        Debug.Log(current);
-
         score = DataKeeper.getBestScores()[pm.currentLevel];
         scoreObj.text = current + "    Best: " + convertScore(score);
       }

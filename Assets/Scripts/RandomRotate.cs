@@ -5,10 +5,12 @@ using UnityEngine;
 public class RandomRotate : MonoBehaviour
 {
   public Rigidbody rb;
+  private float speed = 0.5f;
   
   // Update is called once per frame
   void FixedUpdate()
   {
-    rb.AddTorque(new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), ForceMode.Force);
+    if (TitleScreen.loading) speed = 3;
+    rb.AddTorque(new Vector3(Random.Range(-speed, speed), Random.Range(-speed, speed), Random.Range(-speed, speed)), ForceMode.Force);
   }
 }

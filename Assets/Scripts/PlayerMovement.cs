@@ -8,19 +8,20 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     public PlayerCollision pc;
+    public SettingsHandler sh;
     public Rigidbody rb;
-    public Joystick joystick;
     public float forwardForce = 200f;
     public float sideForce = 560f;
     public float jumpForce = 5f;
     public bool alive = true;
     public int jumpTimer = 69;
-    // public bool justJumped = false;
+    public bool justJumped = false;
     public float timeRoundStart;
     public bool infinite = true;
     public float speed = 10;
     public float horizontalInput;
     public GameObject androidControls;
+    public GameObject controlTutorial;
     public GameObject forcefieldobj;
     public MeshRenderer forcefieldmesh;
     private float moveMult = 1;
@@ -31,11 +32,12 @@ public class PlayerMovement : MonoBehaviour
     public int forceFieldCooldownInit;
     private int forceFieldCooldown;
     public static bool growForceField = false;
-    private bool fireForceField = false;
+    public static bool fireForceField = false;
     private float percent;
-    private AudioSource music;
+    private AudioSource musicSource;
+    private AudioPlayer audiop;
     private bool musicStarted = false;
-    private int holeCount;
+    public int blackHoleCount;
     public static bool startSpeedIncrement = false;
     // float horizontalInput = Input.GetAxis ("Horizontal"); 
 
@@ -48,9 +50,16 @@ public class PlayerMovement : MonoBehaviour
     {
       // forcefieldobj.GetComponent<MeshRenderer>().enabled = false;
       timeRoundStart = Time.time;
-      music = GameObject.Find("AudioPlayer").GetComponent<AudioSource>();
-      if (!DataKeeper.android) {
+      musicSource = GameObject.Find("AudioPlayer").GetComponent<AudioSource>();
+      if (DataKeeper.android) {
+        moveMult = 1f / (DataKeeper.dataInstance.difficulty+DataKeeper.androidOffset);
+        if (DataKeeper.difficultyToString() == "easy" && currentLevel == 0) {
+        Debug.Log("starting to show controls");
+        StartCoroutine(showControlTutorial());
+      }
+      } else {
         Destroy(androidControls.gameObject);
+        moveMult = 1f / DataKeeper.dataInstance.difficulty;
       }
       if (infinite) {
         float sizer = (DataKeeper.dataInstance.difficulty + 20) / 10;
@@ -58,22 +67,58 @@ public class PlayerMovement : MonoBehaviour
         forcefieldobj.transform.localScale = normalScale;
         forcefieldobj.transform.position = new Vector3(0, -10, 1);
         forcefieldmesh = forcefieldobj.GetComponent<MeshRenderer>();
+        sh.addSongs();
         StartCoroutine(infiniteStartText());
+      } else {
+        audiop = GameObject.Find("AudioPlayer").GetComponent<AudioPlayer>();
+        if (!musicSource.isPlaying || musicSource.clip != audiop.songs[audiop.songs.Count-1]) {
+          startThemeSong();
+        }
       }
-      moveMult = 1f / DataKeeper.dataInstance.difficulty;
       // also scale forceField by difficulty
-      forceFieldCooldownInit = (int) (forceFieldCooldownInit / (5 * DataKeeper.dataInstance.difficulty));
+      forceFieldCooldownInit = (int) (forceFieldCooldownInit / (4 * DataKeeper.dataInstance.difficulty));
       forceFieldCooldown = 300;
-      holeCount = (int) (3 * DataKeeper.dataInstance.difficulty);
+      adManager.bonusCounter = 0;
+      initBlackHole();
+      if (DataKeeper.dataInstance.bonus == 0) {
+        DataKeeper.dataInstance.bonus = 1;
+      }
+    }
+    IEnumerator showControlTutorial() {
+      Debug.Log("currently showing controls");
+      controlTutorial.SetActive(true);
+      yield return new WaitForSeconds(2);
+      Debug.Log("done showing controls");
+      controlTutorial.SetActive(false);
+      yield return null;
+    }
+
+    public void startThemeSong() {
+      musicSource.clip = audiop.songs[audiop.songs.Count-1];
+      musicSource.Play();
+      musicSource.loop = true;
+    }
+
+    public void initBlackHole() {
+      blackHoleCount = (int) (Mathf.Round(DataKeeper.dataInstance.difficulty+0.1f) + DataKeeper.dataInstance.bonus);
+      fireForceField = false;
     }
 
     IEnumerator infiniteStartText() {
-      pc.notifyText.text = "Survive till the end of the song";
+      if (DataKeeper.dataInstance.selectedMusic != "Infinite Silence") {
+        pc.notifyText.text = "Survive till the end of the song";
+      } else {
+        pc.notifyText.text = "Survive till the end of time";
+      }
       yield return new WaitForSeconds(2);
-      pc.notifyText.text += "\n\nSelect a different song in settings (esc)";
+      pc.notifyText.text += "\n\nDifferent songs are in settings";
+      if (!DataKeeper.android) pc.notifyText.text += " (esc)";  
       yield return new WaitForSeconds(4);
-      pc.notifyText.text = "Release a black hole using `W`, `Up arrow` or click with the mouse";
-      holeCount++;
+      pc.notifyText.text = "Release black hole";
+      if (DataKeeper.android) pc.notifyText.text += " with black button";
+      else pc.notifyText.text += "\n`W`, `Up arrow` or click (LMB)";
+      blackHoleCount++;
+      DataKeeper.dataInstance.bonus++;
       engageForceField();
       yield return new WaitForSeconds(2);
       pc.notifyText.text = "";
@@ -86,18 +131,24 @@ public class PlayerMovement : MonoBehaviour
         if (e.keyCode == KeyCode.R) {
           restart();
         }
-        if (e.keyCode == KeyCode.Space && jumpTimer >= 69 && alive) {
-          rb.AddForce(0, jumpForce, 0, ForceMode.Impulse);
-          jumpTimer = 0;
+        if (e.keyCode == KeyCode.Space) {
+          jump();
         }
         if (e.keyCode == KeyCode.Return && pc.fin) {
           nextLevel();
         }
-        if (e.keyCode == KeyCode.Escape) {
-          if (!infinite) quit();
-          // if (!infinite) SceneManager.LoadScene("title");
-        }
+        // if (e.keyCode == KeyCode.Escape) {
+        //   if (!infinite) quit();
+        //   // if (!infinite) SceneManager.LoadScene("title");
+        // }
         // Debug.Log("Detected key code: " + e.keyCode);
+      }
+    }
+
+    public void jump() {
+      if (jumpTimer >= 69 && alive) {
+        rb.AddForce(0, jumpForce, 0, ForceMode.Impulse);
+        jumpTimer = 0;
       }
     }
 
@@ -113,22 +164,28 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void quit() {
-      StartCoroutine(DataKeeper.loadAsyncy("title"));
+      SceneManager.LoadScene("title");
+      // StartCoroutine(DataKeeper.loadAsyncy("title"));
     }
 
     public void increaseDifficultyRestart() {
       if (DataKeeper.difficultyToString() == "easy") {
         DataKeeper.dataInstance.difficulty = 2.5f;
       } else if (DataKeeper.difficultyToString() == "normal") {
-        DataKeeper.dataInstance.difficulty = 1;
+        DataKeeper.dataInstance.difficulty = 1.25f;
       } else if (DataKeeper.difficultyToString() == "hard") {
         DataKeeper.dataInstance.difficulty = 0.7f;
       }
-      SceneManager.LoadScene("0");
+      if (infinite) SceneManager.LoadScene("5"); 
+      else SceneManager.LoadScene("0");
     }
 
     public void startSurvival() {
       SceneManager.LoadScene("5");
+    }
+
+    public void startChallenges() {
+      SceneManager.LoadScene("0");
     }
 
     // Update is called once per frame
@@ -139,22 +196,27 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
       }
       if (rb.transform.position.y <= -4) {
-        pc.notifyText.text = "press R to respawn";
+        if (!SettingsHandler.settingsActive) pc.deathScreen.SetActive(true);;
         alive = false;
       }
       if (infinite) {
-        if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && forceFieldCooldown == 0 && holeCount > 0) {
+        if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && !DataKeeper.android) {
           engageForceField();
         }
       }
     }
 
-    private void engageForceField() {
-      fireForceField = true;
-      forceFieldCooldown = forceFieldCooldownInit;
-      forcefieldobj.transform.position = rb.transform.position + new Vector3(0, 0, forcefieldobj.transform.localScale.z + 0.5f);
-      ForceField.playWub();
-      holeCount--;
+    public void engageForceField() { // link black hole button to dis
+      if (forceFieldCooldown == 0 && blackHoleCount > 0 && !SettingsHandler.settingsActive && !pc.deathScreen.activeSelf && !pc.winningScreen.activeSelf) {
+        fireForceField = true;
+        forceFieldCooldown = forceFieldCooldownInit;
+        forcefieldobj.transform.position = rb.transform.position + new Vector3(0, 0, forcefieldobj.transform.localScale.z + 0.5f);
+        ForceField.playWub();
+        blackHoleCount--;
+        if (DataKeeper.dataInstance.bonus > 0) {
+          DataKeeper.dataInstance.bonus--;
+        }    
+      }
     }
 
     // Fixed time update
@@ -167,12 +229,19 @@ public class PlayerMovement : MonoBehaviour
         // Move the player along the the z-axis and handle the horizontal input for x-axis.
         if (!infinite) {
           rb.AddForce(0, 0, moveMult * forwardForce * Time.deltaTime * (Time.time - timeRoundStart) * 0.5f);
+          if (rb.position.y > 2.5f) {
+            rb.AddForce(new Vector3(0, -2*rb.velocity.y, 0), ForceMode.VelocityChange);
+          }
         } else { //infinite
-          speed = (20 * Mathf.Sqrt(Time.time - timeRoundStart)) / DataKeeper.dataInstance.difficulty;
+          if (DataKeeper.android) {
+            speed = (20 * Mathf.Sqrt(Time.time - timeRoundStart)) / (DataKeeper.dataInstance.difficulty+DataKeeper.androidOffset);
+          } else {
+            speed = (20 * Mathf.Sqrt(Time.time - timeRoundStart)) / DataKeeper.dataInstance.difficulty;
+          }
           if (forceFieldCooldown <= (forceFieldCooldownInit / 2)) charge();
           infiniteMovementHandler();
           abilityHandler();
-          musicHandler();
+          musicSourceHandler();
         }
         rb.AddForce(moveMult * horizontalInput * sideForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
       }
@@ -192,28 +261,32 @@ public class PlayerMovement : MonoBehaviour
       }
     }
     private void abilityHandler() {
-      if (forceFieldCooldown > 0 && holeCount > 0) { // Handle the forceField/black hole
+      if (forceFieldCooldown > 0 && blackHoleCount > 0) { // Handle the forceField/black hole
         forceFieldCooldown--;
         percent = 100 - (float) forceFieldCooldown / forceFieldCooldownInit * 100;
-        if (forceFieldCooldown < 0) forceFieldCooldown = 0;
-        forceFieldText.text = "Black Hole :: " + holeCount + " (" + Mathf.Round(percent) + ")";
-      } else if (holeCount > 0) {
-        forceFieldText.text = "Black Hole :: " + holeCount + " (READY)";
+        if (percent < 0) percent = 0;
+        forceFieldText.text = "Black Hole :: (" + Mathf.Round(percent) + ")";
+      } else if (blackHoleCount > 0) {
+        forceFieldText.text = "Black Hole :: (READY)";
       } else {
         forceFieldText.text = "Black Hole :: ---";
       }
     }
 
-    private void musicHandler() {
-      if (music.isPlaying && !musicStarted && currentLevel == 5) {// Music hath engaged
+    private void musicSourceHandler() {
+      if (musicSource.isPlaying && !musicStarted && currentLevel == 5) {// musicSource hath engaged
         musicStarted = true;
       }
-      if (!music.isPlaying && musicStarted && alive) { // Music is finito -> Player wins survival
+      if (!musicSource.isPlaying && musicStarted && alive && Application.isFocused) { // musicSource is finito -> Player wins survival
         alive = false;
         rb.constraints = RigidbodyConstraints.FreezePosition;
-        string songName = music.clip.ToString().Split('(')[0];
-        pc.notifyText.text = "You completed\n\n" + songName + 
-                              "\n\n" + DataKeeper.difficultyToString() + " :: " + pc.sh.convertScore(pc.sh.score) + " points";
+        string songName = musicSource.clip.ToString().Split('(')[0];
+        pc.notifyText.text = songName +"\n\n" + DataKeeper.difficultyToString().ToUpper() + " :: " 
+                            + pc.sh.convertScore(pc.sh.score) + " points";
+        pc.showWinningScreen();
+        pc.fin = true;
+        sh.forceRestart = true;
+        if (SettingsHandler.settingsActive) sh.toggleSettingsMenu(true);
       }
     }
 
@@ -239,14 +312,10 @@ public class PlayerMovement : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         return;
       }
-
-      if (Input.touchCount > 0) {
-        if (pc.fin) {
-          SceneManager.LoadScene((int.Parse(SceneManager.GetActiveScene().name) + 1).ToString());
-          pc.fin = false;
-        } else if (!alive) {
-          SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        } else if (Input.GetTouch(0).position.x > Screen.width / 2) {
+      horizontalInput = 0;
+      if (Input.touchCount > 0 && alive) {
+        if (Input.GetTouch(0).position.y < Screen.height / 4 || Input.GetTouch(0).position.y > Screen.height - Screen.height / 6) return;
+        if (Input.GetTouch(0).position.x > Screen.width / 2) {
           horizontalInput = 1;
         } else if (Input.GetTouch(0).position.x < Screen.width / 2) {
           horizontalInput = -1;

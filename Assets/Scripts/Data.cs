@@ -6,6 +6,7 @@ using UnityEngine;
 public class Data
 {
   public float version;
+  public int bonus;
   public int maxEasyReached;
   public int maxNormalReached;
   public int maxHardReached;
@@ -21,6 +22,7 @@ public class Data
 
   public Data(float version) {
     this.version = version;
+    bonus = 0;
     maxEasyReached = -1;
     maxNormalReached = -1;
     maxHardReached = -1;
@@ -33,6 +35,7 @@ public class Data
 
     selectedMusic = "notset";
     difficulty = 4f;
+    if (DataKeeper.android) difficulty += 0.49f;
     soundVolume = 0.7f;
     musicVolume = 0.6f;
   }

@@ -23,7 +23,11 @@ public class FollowPlayer : MonoBehaviour
 
   private void FixedUpdate() {
     if (pc.fin) {
-      offset += new Vector3(0, 0.004f, -0.042f);
+      if (DataKeeper.android) {
+        offset += new Vector3(0, 0.004f/DataKeeper.androidOffset, -0.021f/DataKeeper.androidOffset);
+      } else {
+        offset += new Vector3(0, 0.004f, -0.042f);
+      }
     }
     if (shake) {
       shakeCount++;

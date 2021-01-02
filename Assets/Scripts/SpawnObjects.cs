@@ -78,9 +78,9 @@ public class SpawnObjects : MonoBehaviour
         if (pm.speed > 150) {
           yield return new WaitForSeconds(Random.Range(0.4f, 0.8f));
         } else if (pm.speed > 100) {
-          yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
+          yield return new WaitForSeconds(Random.Range(0.5f, 0.9f));
         } else {
-          yield return new WaitForSeconds(Random.Range(0.8f, 1.4f));
+          yield return new WaitForSeconds(Random.Range(0.6f, 1.1f));
         }
         spawnWave();
       }
