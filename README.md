@@ -1,6 +1,6 @@
 # Cube-Rush
 ![img](https://i.imgur.com/rG2RgNF.png)
-3D fast paced platformer in Unity where you get past the obstacles of life.
+3D fast paced action where you get past the obstacles of life.
 
 ## Challenges
 ![img](https://i.imgur.com/lEl9U2E.png)
