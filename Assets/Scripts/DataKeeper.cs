@@ -8,7 +8,7 @@ public class DataKeeper : MonoBehaviour
   public static Data dataInstance;
   public static bool android = true;
   public static float androidOffset = 2.5f;
-  private static float version = 1.0f;
+  private static float version = 1.01f;
   /// <summary> Get a load from file, or create a new dataInstance to store all needed information </summary> ///
   private void Awake() {
     if (dataInstance == null) {

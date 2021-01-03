@@ -28,9 +28,11 @@ public class TitleScreen : MonoBehaviour
   private void Start() {
     GameObject audioPlayerObj = GameObject.Find("AudioPlayer");
     soundEffectSource = GameObject.Find("DataKeeper").GetComponent<AudioSource>();
+    soundEffectSource.volume = DataKeeper.dataInstance.soundVolume;
     musicSource = audioPlayerObj.GetComponent<AudioSource>();
     audiop = audioPlayerObj.GetComponent<AudioPlayer>();
     if (!musicSource.isPlaying || musicSource.clip != audiop.songs[audiop.songs.Count-1]) {
+      musicSource.volume = DataKeeper.dataInstance.musicVolume;
       musicSource.clip = audiop.songs[audiop.songs.Count-1];
       musicSource.Play();
       musicSource.loop = true;
