@@ -18,7 +18,7 @@ public class adManager : MonoBehaviour, IUnityAdsListener
     DontDestroyOnLoad(this);
 
     Advertisement.AddListener(this);
-    Advertisement.Initialize("3956813", true);
+    Advertisement.Initialize("3956813", false);
     while (!Advertisement.IsReady(placement))
       yield return null;
   }
