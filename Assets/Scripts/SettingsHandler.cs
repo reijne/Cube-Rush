@@ -137,8 +137,6 @@ public class SettingsHandler : MonoBehaviour
     settingsMenu.SetActive(!settingsMenu.activeSelf);
     settingsActive = settingsMenu.activeSelf; 
     if (settingsMenu.activeSelf) {
-      Debug.Log(musicSlider);
-      Debug.Log(DataKeeper.dataInstance.musicVolume);
       musicSlider.value = DataKeeper.dataInstance.musicVolume;
       soundSlider.value = DataKeeper.dataInstance.soundVolume;
     } else {

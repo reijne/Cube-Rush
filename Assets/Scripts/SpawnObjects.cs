@@ -8,6 +8,7 @@ public class SpawnObjects : MonoBehaviour
     public GameObject player;
     public GameObject small;
     public GameObject medium;
+    public GameObject shover;
     public int spawnCount;
 
     public float ymin_small;
@@ -36,7 +37,7 @@ public class SpawnObjects : MonoBehaviour
           spawnMedium(x, z);
         }
       }
-      spawnBeforePlayer();
+      spawnShover();
     }
 
     private void spawnSmall(float x, float z) {
@@ -49,8 +50,8 @@ public class SpawnObjects : MonoBehaviour
       m.transform.position = new Vector3(x, Random.Range(ymin_med, ymin_med+4f), z);
     }
 
-    private void spawnBeforePlayer() {
-      GameObject m = Instantiate(medium) as GameObject;
+    private void spawnShover() {
+      GameObject m = Instantiate(shover) as GameObject;
       m.transform.position = pm.rb.transform.position + new Vector3(0, 0, 40+pm.speed);
       if (pm.speed > 75) {
         GameObject o = Instantiate(medium) as GameObject;

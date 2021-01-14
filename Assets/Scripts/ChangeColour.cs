@@ -14,9 +14,9 @@ public class ChangeColour : MonoBehaviour
     private int colorIndex = 0;
     private Color[] rainbow = {new Color (255,0,0),
                                new Color (255,0,255),
-                               new Color (25,25,255),
+                               new Color (42,42,255),
                                new Color (0,255,255),
-                               new Color (25,255,25),
+                               new Color (42,255,42),
                                new Color (255,255,0)};
     // Start is called before the first frame update
     void Start()

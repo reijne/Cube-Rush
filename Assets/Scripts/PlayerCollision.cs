@@ -26,6 +26,12 @@ public class PlayerCollision : MonoBehaviour
   private bool firstFin = true;
   private int hitCooldown;
   private bool adClicked;
+
+  private void Awake() {
+    if (DataKeeper.dataInstance.bonus == 0) {
+      addBonus();
+    }
+  }
   private void Start() {
     GameObject au = GameObject.Find("AudioPlayer");
     audiop = au.GetComponent<AudioPlayer>();
@@ -159,11 +165,9 @@ public class PlayerCollision : MonoBehaviour
     adManager.showAd("addBonus");
   }
 
-  public void addBonus() { // Needs to also show an ad and only add a bonus if the video is complete
-    if (DataKeeper.dataInstance.bonus == 0) {
-      DataKeeper.dataInstance.bonus = 1;
-    }
+  public void addBonus() {
     DataKeeper.dataInstance.bonus++;
+    DataKeeper.dataInstance.bonus = DataKeeper.dataInstance.bonus % (int) (Mathf.Round(DataKeeper.dataInstance.difficulty)+1);  
     if (pm.infinite) pm.initBlackHole();
   }
 }

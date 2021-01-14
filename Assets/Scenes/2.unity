@@ -859,7 +859,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6062942357604198308, guid: 96aadb63ed3884e48bfdb92bb8de312e, type: 3}
       propertyPath: m_Intensity
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6062942357991606354, guid: 96aadb63ed3884e48bfdb92bb8de312e, type: 3}
       propertyPath: m_Color.g
@@ -1814,11 +1814,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1813942511632235140, guid: e1b486ff16cff9e40b2354a772d91f3f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -848
+      value: -840
       objectReference: {fileID: 0}
     - target: {fileID: 1813942511632235140, guid: e1b486ff16cff9e40b2354a772d91f3f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 463
+      value: 480
       objectReference: {fileID: 0}
     - target: {fileID: 1813942511632235140, guid: e1b486ff16cff9e40b2354a772d91f3f, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3781,6 +3781,18 @@ PrefabInstance:
       propertyPath: pm
       value: 
       objectReference: {fileID: 1506678546}
+    - target: {fileID: 8730498995528573080, guid: c0fcc78e421c40e49a2b62b6db0dd29a, type: 3}
+      propertyPath: shieldImageObj
+      value: 
+      objectReference: {fileID: 496601602}
+    - target: {fileID: 8730498995528573080, guid: c0fcc78e421c40e49a2b62b6db0dd29a, type: 3}
+      propertyPath: shieldImage
+      value: 
+      objectReference: {fileID: 496601603}
+    - target: {fileID: 8730498995528573080, guid: c0fcc78e421c40e49a2b62b6db0dd29a, type: 3}
+      propertyPath: circleImageObj
+      value: 
+      objectReference: {fileID: 496601601}
     - target: {fileID: 8730498995528573081, guid: c0fcc78e421c40e49a2b62b6db0dd29a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3876,6 +3888,27 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8730498995528573081, guid: c0fcc78e421c40e49a2b62b6db0dd29a, type: 3}
   m_PrefabInstance: {fileID: 496601599}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &496601601 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8730498996346189144, guid: c0fcc78e421c40e49a2b62b6db0dd29a, type: 3}
+  m_PrefabInstance: {fileID: 496601599}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &496601602 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8730498996754174562, guid: c0fcc78e421c40e49a2b62b6db0dd29a, type: 3}
+  m_PrefabInstance: {fileID: 496601599}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &496601603 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8730498996754174560, guid: c0fcc78e421c40e49a2b62b6db0dd29a, type: 3}
+  m_PrefabInstance: {fileID: 496601599}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496601602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &497472236
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7210,7 +7243,7 @@ PrefabInstance:
       objectReference: {fileID: 1506678545}
     - target: {fileID: 1566554291070317584, guid: 9d32aba5299dc5946a6fbeb56f66cbfb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: showAddBonusAd
+      value: addBonus
       objectReference: {fileID: 0}
     - target: {fileID: 1566554291355252504, guid: 9d32aba5299dc5946a6fbeb56f66cbfb, type: 3}
       propertyPath: m_Name
@@ -10440,6 +10473,7 @@ MonoBehaviour:
   speed: 10
   horizontalInput: 0
   androidControls: {fileID: 12340046}
+  controlTutorial: {fileID: 0}
   forcefieldobj: {fileID: 0}
   forcefieldmesh: {fileID: 0}
   currentLevel: 0
@@ -11897,11 +11931,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5077218847819119294, guid: 85a2efba8fb15df488bda629f20bc9f7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 860
+      value: 895
       objectReference: {fileID: 0}
     - target: {fileID: 5077218847819119294, guid: 85a2efba8fb15df488bda629f20bc9f7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 440
+      value: 480
       objectReference: {fileID: 0}
     - target: {fileID: 5077218847819119294, guid: 85a2efba8fb15df488bda629f20bc9f7, type: 3}
       propertyPath: m_SizeDelta.x

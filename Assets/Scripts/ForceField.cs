@@ -16,7 +16,7 @@ public class ForceField : MonoBehaviour
     }
   }
   private void OnCollisionEnter(Collision c) {
-    if (c.gameObject.tag == "MovingObstacle" && PlayerMovement.fireForceField) {
+    if ((c.gameObject.tag == "MovingObstacle" || c.gameObject.tag == "Shover") && PlayerMovement.fireForceField) {
       Destroy(c.gameObject);
       PlayerMovement.growForceField = true;
     }

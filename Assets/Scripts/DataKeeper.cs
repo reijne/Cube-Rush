@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class DataKeeper : MonoBehaviour
 {
   public static Data dataInstance;
-  public static bool android = true;
+  public static bool android = false;
   public static float androidOffset = 2.5f;
   private static float version = 1.01f;
   /// <summary> Get a load from file, or create a new dataInstance to store all needed information </summary> ///
@@ -83,7 +83,7 @@ public class DataKeeper : MonoBehaviour
   public static IEnumerator loadAsyncy(string level) {
     AsyncOperation op = SceneManager.LoadSceneAsync(level);
     while (!op.isDone) {
-      Debug.Log("Loading: " + op.progress); // Could do some fun shit here
+      // Debug.Log("Loading: " + op.progress); // Could do some fun shit here
       yield return null;
     }
   }

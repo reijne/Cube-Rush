@@ -227,7 +227,7 @@ public class PlayerMovement : MonoBehaviour
       
       if (alive) {
         // Move the player along the the z-axis and handle the horizontal input for x-axis.
-        if (!infinite) {
+        if (!infinite) { // challenges
           rb.AddForce(0, 0, moveMult * forwardForce * Time.deltaTime * (Time.time - timeRoundStart) * 0.5f);
           if (rb.position.y > 2.5f) {
             rb.AddForce(new Vector3(0, -2*rb.velocity.y, 0), ForceMode.VelocityChange);
@@ -256,7 +256,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(0, 0, 0.5f*speed); //move player back to start
       }
       if (rb.transform.position.y > 2) { 
-        rb.AddForce(0, -0.1f*speed, 0); //plop player back on platform
+        rb.AddForce(0, -0.1f*speed, 0, ForceMode.VelocityChange); //plop player back on platform
         rb.AddForce(0, 0, -0.5f*speed); //give penalty cuz 2 high
       }
     }

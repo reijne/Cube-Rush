@@ -9,14 +9,13 @@ public class FollowPlayer : MonoBehaviour
   public PlayerCollision pc;
   public bool shake = false;
   private int shakeCount = 0;
-    // Start is called before the first frame update
-  void Start() {
-  }
+  private float yoff = 0.004f;
+  private float zoff = 0.0042f;
 
   // Update is called once per frame
   void Update() {
     transform.position = player.position + offset;
-    if (shake && shakeCount < 15) {
+    if (shake && shakeCount < 20) {
       transform.position += (shakeCount % 3 - 1) * new Vector3(0.04f, 0.04f, 0.04f);
     }
   }
@@ -24,9 +23,9 @@ public class FollowPlayer : MonoBehaviour
   private void FixedUpdate() {
     if (pc.fin) {
       if (DataKeeper.android) {
-        offset += new Vector3(0, 0.004f/DataKeeper.androidOffset, -0.021f/DataKeeper.androidOffset);
+        offset += new Vector3(0, yoff, -zoff/2) / DataKeeper.androidOffset;
       } else {
-        offset += new Vector3(0, 0.004f, -0.042f);
+        offset += new Vector3(0, yoff, -zoff) / (DataKeeper.dataInstance.difficulty+1);
       }
     }
     if (shake) {

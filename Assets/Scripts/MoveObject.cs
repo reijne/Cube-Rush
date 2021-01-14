@@ -22,8 +22,10 @@ public class MoveObject : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision c) {
-      if (c.gameObject.tag == "MovingObstacle" && c.gameObject.transform.position.z > 10) {
+      if (c.gameObject.tag == "MovingObstacle" && c.gameObject.transform.position.z > 0) {
         Destroy(c.gameObject);
+      } else if (c.gameObject.tag == "Shover") {
+        rb.transform.position += new Vector3(0, 0, 0.4f*pm.speed);
       }
     }
 }
