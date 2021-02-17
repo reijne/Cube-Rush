@@ -1,3 +1,6 @@
+# Check it out on ITCH.IO
+https://phealsout.itch.io/cube-rush
+
 # Cube-Rush
 ![img](https://i.imgur.com/rG2RgNF.png)
 3D fast paced action where you get past the obstacles of life.
